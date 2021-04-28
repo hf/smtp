@@ -4,7 +4,7 @@ SMTP
 This is a really simple SMTP server implementation in Go. You can use it to
 build basic SMTP servers.
 
-Find an example in [examples/readme](tree/main/examples/readme).
+Check the `examples/basic` package.
 
 ## License
 
