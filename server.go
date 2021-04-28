@@ -5,6 +5,7 @@ import (
 	"crypto/tls"
 	"go.uber.org/zap"
 	"net"
+	"os"
 	"sync"
 )
 
@@ -17,7 +18,8 @@ type Config struct {
 	Domain string
 
 	// Size of the buffer per connection. Avoid setting this below 538 bytes,
-	// as that is the standard line length of SMTP (512 + 26 for SIZE).
+	// as that is the standard line length of SMTP (512 + 26 for SIZE). If
+	// unspecified will use 4 pages.
 	BufferSize uint
 
 	// TLS config for the server.
@@ -66,11 +68,11 @@ func NewServer(config Config) *Server {
 	}
 
 	if 0 == config.BufferSize {
-		config.BufferSize = 536
+		config.BufferSize = uint(4 * os.Getpagesize())
 	}
 
-	if config.BufferSize < 536 {
-		config.Logger.Warn("server configured with BufferSize less than 536, which is not recommended", zap.Uint("BufferSize", config.BufferSize))
+	if config.BufferSize < 538 {
+		config.Logger.Warn("server configured with BufferSize less than 538, which is not recommended", zap.Uint("BufferSize", config.BufferSize))
 	}
 
 	return &Server{

@@ -26,7 +26,7 @@ func TestServer(t *tst.T) {
 
 	server := NewServer(Config{
 		Domain:     "example.com",
-		BufferSize: 536,
+		BufferSize: 538,
 		Logger:     zap.NewExample(),
 		NewEnvelope: func(ctx context.Context, sess *Session) (Envelope, error) {
 			domain := sess.Domain()
